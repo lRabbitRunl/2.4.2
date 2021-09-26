@@ -35,9 +35,9 @@ public class UserController {
         return "login";
     }
 
-    @GetMapping
+    @GetMapping(value = "/")
     public String startPage() {
-        return "header";
+        return "login";
     }
 
     @GetMapping("/admin")

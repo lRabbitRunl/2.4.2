@@ -25,11 +25,6 @@ public class RootConfig extends WebMvcConfigurationSupport {
     }
 
 
-//    @Bean
-//    @Scope("prototype")
-//    List<User> workUsers(UserService userService) {
-//        return userService.getAllUsers();
-//    }
 
     @Bean
     DataSource getDataSource() {
@@ -58,19 +53,6 @@ public class RootConfig extends WebMvcConfigurationSupport {
         return emf;
     }
 
-//    @Bean
-//    LocalSessionFactoryBean getSessionFactory() {
-//        LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
-//        factoryBean.setDataSource(getDataSource());
-//
-//        Properties properties = new Properties();
-//        properties.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
-//        properties.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
-//
-//        factoryBean.setHibernateProperties(properties);
-//        factoryBean.setAnnotatedClasses(User.class);
-//        return factoryBean;
-//    }
 
     @Bean
     JpaTransactionManager getTransactionManager() {
