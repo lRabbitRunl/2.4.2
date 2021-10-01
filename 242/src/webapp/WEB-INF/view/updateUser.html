@@ -6,7 +6,7 @@
 </head>
 <body>
 <div><a href="/logout">Logout</a></div>
-<form action="#" th:action="@{/updateUser}" th:object="${user}" method="post">
+<form action="#" th:action="@{/updateUser(id = ${user.getId()})}" th:object="${user}" method="post">
     <label for="id">ID</label>
     <input readonly type="number" th:field="*{id}" id="id" placeholder="ID">
     <br/>

@@ -49,8 +49,8 @@ public class UserController {
         return "admin";
     }
 
-    @GetMapping("/updateUser/{id}")
-    public String updateUserForm(@PathVariable("id") long id, ModelMap model) {
+    @GetMapping("/updateUser")
+    public String updateUserForm(@RequestParam(value = "id") long id, ModelMap model) {
         User user = userService.getUser(id);
         model.addAttribute("user", user);
         model.addAttribute("allRoles", allRoles);
@@ -66,8 +66,8 @@ public class UserController {
         return "redirect:/admin";
     }
 
-    @GetMapping("/deleteUser/{id}")
-    public String deleteUser(@PathVariable("id") long id) {
+    @GetMapping("/deleteUser")
+    public String deleteUser(@RequestParam long id) {
         userService.deleteUser(id);
         return "redirect:/admin";
     }
@@ -82,12 +82,7 @@ public class UserController {
     @RolesAllowed(value = "ADMIN")
     @PostMapping("/addUser")
     public String addUser(User user) {
-        Set<Role> temp = new HashSet<>();
-        if (user.getRoles().isEmpty()) {
-            user.addRole(new Role("USER"));
-        }
-        allRoles.stream().filter(role -> user.getRoles().contains(new Role(role.getName()))).forEach(temp::add);
-        user.setRoles(temp);
+
         userService.setUser(user);
         return "redirect:/admin";
     }

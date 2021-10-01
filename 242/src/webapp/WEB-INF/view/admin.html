@@ -35,8 +35,8 @@
                         </li>
                     </ul>
                 </td>
-                <td><a th:href="@{updateUser/{id}(id=${user.getId()})}">Edit</a></td>
-                <td><a th:href="@{deleteUser/{id}(id=${user.getId()})}">Delete</a></td>
+                <td><a th:href="@{updateUser(id = ${user.getId()})}">Edit</a></td>
+                <td><a th:href="@{deleteUser/(id=${user.getId()})}">Delete</a></td>
             </tr>
             </tbody>
         </table>
