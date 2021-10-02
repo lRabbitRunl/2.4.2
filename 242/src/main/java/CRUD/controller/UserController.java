@@ -2,31 +2,24 @@ package CRUD.controller;
 
 import CRUD.Service.RoleService;
 import CRUD.Service.UserService;
-import CRUD.model.Role;
 import CRUD.model.User;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.security.RolesAllowed;
 import java.security.Principal;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+
 
 @Controller
 @RequestMapping("/")
 public class UserController {
     private final UserService userService;
-    private final Set<Role> allRoles;
     private final RoleService roleService;
 
-    public UserController(@Qualifier("userService") UserService userService,
-                          Set<Role> allRoles,
-                          RoleService roleService) {
+    @Autowired
+    public UserController(UserService userService, RoleService roleService) {
         this.userService = userService;
-        this.allRoles = allRoles;
         this.roleService = roleService;
     }
 
@@ -42,26 +35,21 @@ public class UserController {
 
     @GetMapping("/admin")
     public String listUsers(ModelMap model) {
-        List<User> list = userService.getAllUsers();
-        Set<Role> roles = roleService.getAllRoles();
-        model.addAttribute("users", list);
-        model.addAttribute("roles", roles);
+        model.addAttribute("users", userService.getAllUsers());
+        model.addAttribute("roles", roleService.getAllRoles());
         return "admin";
     }
 
     @GetMapping("/updateUser")
     public String updateUserForm(@RequestParam(value = "id") long id, ModelMap model) {
-        User user = userService.getUser(id);
-        model.addAttribute("user", user);
-        model.addAttribute("allRoles", allRoles);
+        model.addAttribute("user", userService.getUser(id));
+        model.addAttribute("allRoles", roleService.getAllRoles());
         return "updateUser";
     }
 
     @PostMapping("/updateUser")
     public String updateUser(User user) {
-        Set<Role> temp = new HashSet<>();
-        user.getRoles().forEach(role -> temp.add(roleService.getRoleByName(role.getName())));
-        user.setRoles(temp);
+        roleService.updateUser(user);
         userService.updateUser(user);
         return "redirect:/admin";
     }
@@ -75,14 +63,13 @@ public class UserController {
     @RolesAllowed(value = "ADMIN")
     @GetMapping("/addUser")
     public String addUserForm(@ModelAttribute User user, ModelMap model) {
-        model.addAttribute("allRoles", allRoles);
+        model.addAttribute("allRoles", roleService.getAllRoles());
         return "addUser";
     }
 
     @RolesAllowed(value = "ADMIN")
     @PostMapping("/addUser")
     public String addUser(User user) {
-
         userService.setUser(user);
         return "redirect:/admin";
     }
